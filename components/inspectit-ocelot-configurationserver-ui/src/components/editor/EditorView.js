@@ -12,9 +12,38 @@ import { getConfigurationType } from '../../lib/configuration-utils';
 import { CONFIGURATION_TYPES } from '../../data/constants';
 import MethodConfigurationEditor from './method-configuration-editor/MethodConfigurationEditor';
 
+import { Tabs } from 'react-simple-tabs-component';
+// (Optional) if you don't want to include bootstrap css stylesheet
+import 'react-simple-tabs-component/dist/index.css';
 const AceEditor = dynamic(() => import('./yaml-editor/AceEditor'), { ssr: false });
 const TreeTableEditor = dynamic(() => import('./visual-editor/TreeTableEditor'), { ssr: false });
 
+const TabOne = () => {
+  return (
+    <>
+      <h3>Tab One</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis sint illum iusto nostrum cumque qui voluptas tenetur inventore
+        ut quis?
+      </p>
+    </>
+  );
+};
+
+const tabs = [
+  {
+    label: 'Tab One', // Tab Title - String
+    Component: TabOne, // Tab Body - JSX.Element
+  },
+  {
+    label: 'Tab Two',
+    Component: TabOne,
+  },
+  {
+    label: 'Tab Three',
+    Component: TabOne,
+  },
+];
 /**
  * Editor view consisting of the AceEditor and a toolbar.
  *
@@ -79,18 +108,24 @@ const EditorView = ({
     );
   } else {
     editorContent = (
-      <AceEditor
-        editorRef={(editor) => (editorRef.current = editor)}
-        onCreate={onCreate}
-        theme="cobalt"
-        options={editorConfig}
-        value={value}
-        onChange={onChange}
-        history-view
-        canSave={canSave}
-        onSave={onSave}
-        readOnly={readOnly}
-      />
+      <Tabs tabs={tabs} />
+
+      // <Tabs>
+      //   <Tab>
+      //     <AceEditor
+      //       editorRef={(editor) => (editorRef.current = editor)}
+      //       onCreate={onCreate}
+      //       theme="cobalt"
+      //       options={editorConfig}
+      //       value={value}
+      //       onChange={onChange}
+      //       history-view
+      //       canSave={canSave}
+      //       onSave={onSave}
+      //       readOnly={readOnly}
+      //     />
+      //   </Tab>
+      // </Tabs>
     );
   }
 

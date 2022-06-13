@@ -1,5 +1,5 @@
 import yaml from 'js-yaml';
-import React from 'react';
+import React, { Children } from 'react';
 import { connect } from 'react-redux';
 import { configurationActions, configurationSelectors } from '../../../redux/ducks/configuration';
 import { notificationActions } from '../../../redux/ducks/notification';
@@ -67,6 +67,7 @@ class ConfigurationView extends React.Component {
     isSearchDialogShown: false,
     isConfigurationDialogShown: false,
     isConvertDialogShown: false,
+    tabs: [],
   };
 
   parsePath = (filePath, defaultConfigFilePath) => {
@@ -155,6 +156,19 @@ class ConfigurationView extends React.Component {
     this.props.selectFile(filename);
   };
 
+  addToChildren = (that, newName, newFileContent, selection) => {
+    console.log('name', newChild);
+    let newChild = { name: that.state.name, fileContent: that.state.newFileContent };
+    let children = this.state.tabs;
+    if (newChild.name !== undefined && newChild.fileContent !== null) {
+      children.push(newChild);
+    }
+    that.setState({ tabs: children });
+    console.log('children', children);
+    that.render();
+    console.log('after render', children);
+  };
+
   render() {
     const {
       selection,
@@ -175,7 +189,8 @@ class ConfigurationView extends React.Component {
     const { path, name } = this.parsePath(selection, selectedDefaultConfigFile);
     const icon = 'pi-' + (isDirectory ? 'folder' : 'file');
     const showHeader = !!name;
-
+    console.log('name', name);
+    console.log('path', path);
     const readOnly = !canWrite || !!selectedDefaultConfigFile || !isLatestVersion;
 
     const fileContentWithoutFirstLine = fileContent ? fileContent.split('\n').slice(1).join('\n') : '';
@@ -225,6 +240,10 @@ class ConfigurationView extends React.Component {
             showCreateDirectoryDialog={this.showCreateDirectoryDialog}
             showMoveDialog={this.showMoveDialog}
             readOnly={readOnly}
+            addToChildren={() => {
+              console.log('naamee', name);
+              this.addToChildren(this, name, fileContent, selection);
+            }}
           />
           <div className="details">Last refresh: {this.props.updateDate ? new Date(this.props.updateDate).toLocaleString() : '-'}</div>
         </div>

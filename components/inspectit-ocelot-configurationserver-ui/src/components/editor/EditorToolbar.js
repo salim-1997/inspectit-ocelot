@@ -6,6 +6,7 @@ import { SplitButton } from 'primereact/splitbutton';
 
 /** data */
 import { TOOLTIP_OPTIONS } from '../../data/constants';
+import Tabs, { Tab } from 'react-awesome-tabs';
 
 /**
  * The toolbar used within the editor view.
